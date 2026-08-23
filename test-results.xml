@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-08-23 04:17:17Z" end-time="2026-08-23 04:17:17Z" duration="0.0459612">
+  <test-suite type="TestSuite" id="1000" name="UnityCliCiDemo" fullname="UnityCliCiDemo" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-08-23 04:17:17Z" end-time="2026-08-23 04:17:17Z" duration="0.045961" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1003" name="Tests.dll" fullname="C:/Unity/UnityCliCiDemo/Library/ScriptAssemblies/Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-08-23 04:17:17Z" end-time="2026-08-23 04:17:17Z" duration="0.036107" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="64456" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1004" name="UnityCliCiDemo" fullname="UnityCliCiDemo" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-08-23 04:17:17Z" end-time="2026-08-23 04:17:17Z" duration="0.035517" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1005" name="Tests" fullname="UnityCliCiDemo.Tests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-08-23 04:17:17Z" end-time="2026-08-23 04:17:17Z" duration="0.035333" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="SmokeTests" fullname="UnityCliCiDemo.Tests.SmokeTests" classname="UnityCliCiDemo.Tests.SmokeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-08-23 04:17:17Z" end-time="2026-08-23 04:17:17Z" duration="0.034213" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1002" name="OnePlusOne_EqualsTwo" fullname="UnityCliCiDemo.Tests.SmokeTests.OnePlusOne_EqualsTwo" methodname="OnePlusOne_EqualsTwo" classname="UnityCliCiDemo.Tests.SmokeTests" runstate="Runnable" seed="1814164467" result="Passed" start-time="2026-08-23 04:17:17Z" end-time="2026-08-23 04:17:17Z" duration="0.017239" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: C:/Users/adam/AppData/LocalLow/DefaultCompany/UnityCliCiDemo\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
