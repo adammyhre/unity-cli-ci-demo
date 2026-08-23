@@ -1,0 +1,93 @@
+name: Unity EditMode Tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+env:
+  UNITY_EDITOR_VERSION: "6000.5.9f1"
+  UNITY_CLI_CHANNEL: beta
+  UNITY_NON_INTERACTIVE: "1"
+  UNITY_NO_CONSENT_PROMPT: "1"
+  UNITY_NO_CRASH_REPORT: "1"
+  UNITY_NO_UPDATE_CHECK: "1"
+
+jobs:
+  editmode-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Unity CLI
+        run: |
+          curl -fsSL https://public-cdn.cloud.unity3d.com/hub/prod/cli/install.sh | UNITY_CLI_CHANNEL=beta bash
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          unity --version
+
+      - name: Install Unity Editor
+        run: |
+          unity install "$UNITY_EDITOR_VERSION" --yes --accept-eula
+          unity editors -i
+
+      - name: Activate license (Pro / serial)
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        run: |
+          EDITOR_PATH=$(unity editors -i --format json | jq -r --arg v "$UNITY_EDITOR_VERSION" '.[] | select(.version==$v) | .path' | head -n1)
+          if [ -z "$EDITOR_PATH" ]; then
+            EDITOR_PATH=$(find /opt /home -name Unity -type f 2>/dev/null | head -n1)
+          fi
+          echo "Using editor: $EDITOR_PATH"
+          "$EDITOR_PATH" -batchmode -nographics -quit \
+            -serial "$UNITY_SERIAL" \
+            -username "$UNITY_EMAIL" \
+            -password "$UNITY_PASSWORD" \
+            -logFile -
+
+      - name: Run EditMode tests
+        run: |
+          unity test "$GITHUB_WORKSPACE" \
+            --editor-version "$UNITY_EDITOR_VERSION" \
+            --mode EditMode \
+            --output "$GITHUB_WORKSPACE/test-results.xml" \
+            --report-format nunit,junit \
+            --allow-install \
+            --timeout 600 \
+            --format github \
+            -- \
+            -nographics
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: editmode-test-results
+          path: |
+            test-results.xml
+            test-results.junit.xml
+            Logs/**
+          if-no-files-found: warn
+
+      - name: Return license
+        if: always()
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        run: |
+          EDITOR_PATH=$(unity editors -i --format json | jq -r --arg v "$UNITY_EDITOR_VERSION" '.[] | select(.version==$v) | .path' | head -n1)
+          if [ -z "$EDITOR_PATH" ]; then
+            EDITOR_PATH=$(find /opt /home -name Unity -type f 2>/dev/null | head -n1)
+          fi
+          echo "Returning license with: $EDITOR_PATH"
+          "$EDITOR_PATH" -batchmode -nographics -quit \
+            -returnlicense \
+            -username "$UNITY_EMAIL" \
+            -password "$UNITY_PASSWORD" \
+            -logFile - || true
